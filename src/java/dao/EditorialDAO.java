@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package dao;
 
 import java.sql.Connection;
@@ -10,32 +6,32 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import model.Editoriales;
 
-import model.Categoria;
 
-/**
- *
- * @author Lenovo Y50-70
- */
-public class CategoriaDAO {
+
+public class EditorialDAO {
     
-    
-    ///metodo para egistrar
-    public static boolean registrar(Categoria cat){
+     public static boolean registrar(Editoriales e){
         
         
         ///encerrar dentro de try catch si no se ejecuta la consulta de manera adecuada o se rompa el tiempo de ejecucucion, la tabla no exista, valores repetidos etc;
         try {
-            String SQL="INSERT INTO categorias(nombre) values(?)";
+            String SQL="insert into editoriales(nit, nombre, telefono, direccion, email, sitioweb) values('?','?','?','?','?','?');";
             
             //HACER CONEXION - cuando se conecte que se guarde en c,
             Connection con =  Conexion.conectar(); //referencia a la base de datos
             //preparar sentencia o consulta
             PreparedStatement st = con.prepareStatement(SQL);
             ///enviar el parametro a esa consulta sql, st es la consulta preparada, hay 1 variable que se espera y aun no se envia, se obtiene cat.getNombre
-            st.setString(1, cat.getNombre()); // a esa consulta preparada hay un parametro es el valor de cat cuando se envie ese valor
+            st.setString(1, e.getNit()); // a esa consulta preparada hay un parametro es el valor de cat cuando se envie ese valor
+              st.setString(2, e.getNombre());
+                st.setString(3, e.getTelefono());
+                  st.setString(4, e.getDireccion());
+                    st.setString(5, e.getEmail());
+                      st.setString(6, e.getSitioweb());
             
-            ///si st.executeupdte(cambio en la informacion, por ejemplo insertar informacion nueva) si regresa mayor a 0 entonces si se hizo una insercion
+          
             if(st.executeUpdate()>0){
                 return true;
             }else {
@@ -53,12 +49,12 @@ public class CategoriaDAO {
     
     
      ///metodo para retornar una lista de todas las categorias
-    public static ArrayList<Categoria> listar(){
+    public static ArrayList<Editoriales> listar(){
         
         
         ///encerrar dentro de try catch si no se ejecuta la consulta de manera adecuada o se rompa el tiempo de ejecucucion, la tabla no exista, valores repetidos etc;
         try {
-            String SQL="select * from categorias";
+            String SQL="SELECT * FROM editoriales";
             
             //HACER CONEXION - cuando se conecte que se guarde en c,
             Connection con = Conexion.conectar(); //referencia a la base de datos
@@ -71,16 +67,20 @@ public class CategoriaDAO {
             //aqui se ejctua y se guardará el resultado de la consulta SQL, 
             ResultSet resultado = st.executeQuery();
             
-            ArrayList<Categoria> lista = null;
+            ArrayList<Editoriales> lista = null;
 
             //se crea objeto de tipo categoria
-            Categoria cat;
+            Editoriales edi;
             //mientras encuentre un dato dentro de resultado, se ira llenando esa lista
             while(resultado.next()){
-                cat = new Categoria(); //se crea una nueva Categoria 
-                cat.setCodigo(resultado.getInt("codigo")); //se asigna con set, se obtiene con get el valor de la variable
-                cat.setNombre(resultado.getString("nombre"));
-                lista.add(cat);
+                edi = new Editoriales(); //se crea una nueva Categoria 
+                edi.setNit(resultado.getString("nit")); //se asigna con set, se obtiene con get el valor de la variable
+                   edi.setNombre(resultado.getString("nombre"));
+                      edi.setDireccion(resultado.getString("direccion"));
+                         edi.setEmail(resultado.getString("email"));
+                            edi.setSitioweb(resultado.getString("sitioweb"));
+                               edi.setTelefono(resultado.getString("telefono"));
+                lista.add(edi);
             }
             
             //retorna la lista completa
@@ -95,5 +95,7 @@ public class CategoriaDAO {
         
         
     }
+    
+    
     
 }

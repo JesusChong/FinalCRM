@@ -1,20 +1,26 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controller;
 
-import dao.CategoriaDAO;
+
+import dao.EditorialDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Categoria;
+import dao.EditorialDAO;
+import model.Editoriales;
 
 /**
  *
  * @author Lenovo Y50-70
  */
-public class CategoriaControl extends HttpServlet {
+public class EditorialControl extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,10 +39,10 @@ public class CategoriaControl extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CategoriaControl</title>");            
+            out.println("<title>Servlet EditorialControl</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CategoriaControl at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet EditorialControl at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -68,33 +74,46 @@ public class CategoriaControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      
-        ///el valor que se envia a traves del action de este servlet del metodo post se crea un objeto string el cual recibirá el parametro nombre
-        String nombre = request.getParameter("nombre");
+
+        
+          String nit = request.getParameter("nit");
+           String nombre = request.getParameter("nombre");
+            String email = request.getParameter("email");
+             String dir = request.getParameter("direcion");
+              String tel = request.getParameter("telefono");
+               String sitio = request.getParameter("sitioweb");
+              
         
         
         ///se instancia un objeto de tipo categoria
-        Categoria c = new Categoria();
+        Editoriales e = new Editoriales();
         
         ///el objeto de tipo categoria setea recibiendo el parametro nombre
-        c.setNombre(nombre);
+        e.setNit(nit);
+        e.setNombre(nombre);
+        e.setEmail(email);
+        e.setDireccion(dir);
+        e.setTelefono(tel);
+        e.setSitioweb(sitio);
+        
         
         //llamamos a la clase CategoriaDAO del paquete dao
         
         
 
-        if(CategoriaDAO.registrar(c)){
-            request.setAttribute("mensaje", "La categoria fue registrada");
+        if(EditorialDAO.registrar(e)){
+            request.setAttribute("mensaje", "La editorial fue registrada");
         }
         else {
-            request.setAttribute("mensaje", "La categoria no fue registrada");
+            request.setAttribute("mensaje", "La editorial no fue registrada");
                 
         }
         
         ///redireccionar hacia registro categoria para que imprima el mensaje
-        request.getRequestDispatcher("registroCategoria.jsp").forward(request, response);
+        request.getRequestDispatcher("registroEditorial.jsp").forward(request, response);
         
     }
+    
 
     /**
      * Returns a short description of the servlet.
@@ -107,3 +126,4 @@ public class CategoriaControl extends HttpServlet {
     }// </editor-fold>
 
 }
+
